@@ -1,27 +1,10 @@
+import source
 import chess
 import chess.pgn
 import chess.engine
 import matplotlib.pyplot as plt
 
 
-def charger_partie(pgn_path):
-    """Charge la partie PGN depuis un fichier."""
-    try:
-        with open(pgn_path) as pgn_file:
-            game = chess.pgn.read_game(pgn_file)
-        return game
-    except Exception as e:
-        print(f"Erreur lors du chargement du fichier PGN: {e}")
-        return None
-
-def victoir(board):
-    result = board.result()
-    if result == '1-0':
-        print("\nLes Blancs ont gagné.")
-    elif result == '0-1':
-        print("\nLes Noirs ont gagné.")
-    else:
-        print("\nLa partie est nulle.")
 
 
 def analyser_partie(pgn_path, eval_couleur="blancs"):
@@ -34,12 +17,12 @@ def analyser_partie(pgn_path, eval_couleur="blancs"):
         return
 
     # Charger la partie depuis le fichier PGN
-    game = charger_partie(pgn_path)
+    game = source.charger_partie(pgn_path)
     if not game:
         return
 
     # Initialiser le moteur Stockfish (chemin à ajuster)
-    stockfish_path = "./stockfish/stockfish-ubuntu-x86-64-avx2"
+    stockfish_path = "../stockfish/stockfish-ubuntu-x86-64-avx2"
     engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
     # Initialiser l'échiquier
@@ -58,7 +41,7 @@ def analyser_partie(pgn_path, eval_couleur="blancs"):
         board.push(move)
 
         # Analyser l'évaluation de la position par Stockfish
-        result = engine.analyse(board, chess.engine.Limit(time=2.0))  # 2 secondes d'analyse
+        result = engine.analyse(board, chess.engine.Limit(time=0.1))  # 2 secondes d'analyse
 
         # Si c'est au tour des noirs, inverser l'évaluation
         eval_score = result["score"].relative.score(mate_score=10000)
@@ -78,7 +61,7 @@ def analyser_partie(pgn_path, eval_couleur="blancs"):
 
     # Afficher l'évolution de la précision (graphique)
     plt.figure(figsize=(10, 6))
-    plt.plot(coups, precisions, marker='o', linestyle='-', color='b', label="Évaluation Stockfish")
+    plt.plot(coups, precisions, marker='o', linestyle='-', color='b', label="Évaluation Stockfish "+eval_couleur)
     plt.axhline(0, color='r', linestyle='--', label="Évaluation neutre")
     plt.xlabel('Nombre de coups')
     plt.ylabel('Évaluation (centipions)')
@@ -92,13 +75,11 @@ def analyser_partie(pgn_path, eval_couleur="blancs"):
     for coup_num, move in gaffes:
         print(f"Coup {coup_num}: {move}")
 
-    victoir(board)
-
     # Fermer le moteur Stockfish
     engine.quit()
 
 
 # Exemple d'utilisation
-pgn_path = "partie.pgn"  # Remplace par le chemin de ton fichier PGN
+pgn_path = "partie2.pgn"  # Remplace par le chemin de ton fichier PGN
 eval_couleur = "noirs"  # Choisir 'blancs' ou 'noirs'
 analyser_partie(pgn_path, eval_couleur)

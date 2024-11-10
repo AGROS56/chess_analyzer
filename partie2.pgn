@@ -1,0 +1,42 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2024.11.09"]
+[Round "-"]
+[White "Moose0071"]
+[Black "clash1000"]
+[Result "1-0"]
+[CurrentPosition "2k3r1/pp1nb2p/7B/1B1N4/4b3/8/PP3PPP/2R1K2R b K -"]
+[Timezone "UTC"]
+[ECO "B01"]
+[ECOUrl "https://www.chess.com/openings/Scandinavian-Defense-Mieses-Kotrc-Variation-3.Nc3-Qd8-4.Nf3"]
+[UTCDate "2024.11.09"]
+[UTCTime "17:00:02"]
+[WhiteElo "761"]
+[BlackElo "620"]
+[TimeControl "180"]
+[Termination "Moose0071 won by resignation"]
+[StartTime "17:00:02"]
+[EndDate "2024.11.09"]
+[EndTime "17:02:58"]
+[Link "https://www.chess.com/game/live/124910407783"]
+
+1. e4 d5
+2. exd5 Qxd5
+3. Nc3 Qd8
+4. Nf3 f6
+5. d4 e5
+6. Be3 e4
+7. Nd2 c5
+8. Ndxe4 cxd4
+9. Bxd4 f5
+10. Ng3 Bd6
+11. Nxf5 Bxf5
+12. Qe2+ Qe7
+13. Qxe7+ Bxe7
+14. Bxg7 Nh6
+15. Bxh8 Nd7
+16. Bb5 O-O-O
+17. Bg7 Bxc2
+18. Rc1 Rg8
+19. Bxh6 Be4
+20. Nd5+ 1-0
