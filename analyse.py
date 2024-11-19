@@ -5,17 +5,13 @@ import chess.engine
 import matplotlib.pyplot as plt
 
 
+def analyser_partie(pgn_path):
+    """
+    Analyse une partie PGN et affiche l'évolution de la précision
+    et une courbe montrant qui menait dans la partie.
 
-
-def analyser_partie(pgn_path, eval_couleur="blancs"):
-    """Analyse une partie PGN et affiche les coups avec l'échiquier à chaque tour,
-    l'évolution de la précision et les gaffes."""
-
-    # Vérifier que la couleur choisie est correcte
-    if eval_couleur not in ["blancs", "noirs"]:
-        print("La couleur d'évaluation doit être 'blancs' ou 'noirs'.")
-        return
-
+    :param pgn_path: Chemin vers le fichier PGN à analyser
+    """
     # Charger la partie depuis le fichier PGN
     game = source.charger_partie(pgn_path)
     if not game:
@@ -28,58 +24,70 @@ def analyser_partie(pgn_path, eval_couleur="blancs"):
     # Initialiser l'échiquier
     board = game.board()
 
-    # Variables pour l'évolution de la précision
-    precisions = []
+    # Variables pour stocker les données
+    evaluations = []
     coups = []
-    gaffes = []
+    avantage_blancs = []  # 1 pour Blancs, -1 pour Noirs, 0 pour neutre
 
     # Analyser la partie
     coup_num = 1
-    last_eval = 0.0  # Dernière évaluation pour comparer
     for move in game.mainline_moves():
-        print(f"Coup {coup_num}: {move}")
         board.push(move)
 
-        # Analyser l'évaluation de la position par Stockfish
-        result = engine.analyse(board, chess.engine.Limit(time=0.1))  # 2 secondes d'analyse
+        # Évaluation de la position par Stockfish
+        result = engine.analyse(board, chess.engine.Limit(time=0.5))
+        eval_score = result["score"].relative
 
-        # Si c'est au tour des noirs, inverser l'évaluation
-        eval_score = result["score"].relative.score(mate_score=10000)
-        if (coup_num % 2 == 0 and eval_couleur == "blancs") or (coup_num % 2 != 0 and eval_couleur == "noirs"):
-            eval_score = -eval_score  # Inverser l'évaluation pour la couleur appropriée
+        if eval_score.is_mate():
+            # Gérer les situations de mat
+            mate_in = eval_score.mate()
+            eval_score = 1000 if mate_in > 0 else -1000  # Mat pour Blancs ou Noirs
+        else:
+            eval_score = eval_score.score(mate_score=1000)
 
-        # Sauver l'évaluation pour l'évolution de la précision
-        precisions.append(eval_score)
+        # Stocker l'évaluation en centipions
+        evaluations.append(eval_score)
         coups.append(coup_num)
 
-        # Vérifier s'il y a une gaffe (définir un seuil, par exemple 100 centipions)
-        if abs(eval_score - last_eval) > 100:  # Différence significative
-            gaffes.append((coup_num, move))
+        # Déterminer qui mène
+        if eval_score > 50:  # Avantage Blancs
+            avantage_blancs.append(1)
+        elif eval_score < -50:  # Avantage Noirs
+            avantage_blancs.append(-1)
+        else:  # Neutre
+            avantage_blancs.append(0)
 
-        last_eval = eval_score
         coup_num += 1
 
-    # Afficher l'évolution de la précision (graphique)
-    plt.figure(figsize=(10, 6))
-    plt.plot(coups, precisions, marker='o', linestyle='-', color='b', label="Évaluation Stockfish "+eval_couleur)
+    # Afficher l'évolution des évaluations
+    plt.figure(figsize=(12, 6))
+    plt.subplot(2, 1, 1)
+    plt.plot(coups, evaluations, marker='o', linestyle='-', color='b', label="Évaluation Stockfish")
     plt.axhline(0, color='r', linestyle='--', label="Évaluation neutre")
-    plt.xlabel('Nombre de coups')
-    plt.ylabel('Évaluation (centipions)')
-    plt.title(f'Évolution de la précision dans la partie ({eval_couleur.capitalize()})')
+    plt.xlabel("Nombre de coups")
+    plt.ylabel("Évaluation (centipions)")
+    plt.title("Évolution de l'évaluation par Stockfish")
     plt.legend()
     plt.grid(True)
-    plt.show()
 
-    # Afficher les gaffes
-    print("\nGaffes détectées (gros changements d'évaluation) :")
-    for coup_num, move in gaffes:
-        print(f"Coup {coup_num}: {move}")
+    # Afficher qui menait dans la partie
+    plt.subplot(2, 1, 2)
+    plt.step(coups, avantage_blancs, where='mid', color='g', label="Avantage : Blancs (1) / Noirs (-1)")
+    plt.axhline(0, color='r', linestyle='--', label="Neutre")
+    plt.xlabel("Nombre de coups")
+    plt.ylabel("Avantage")
+    plt.title("Évolution de l'avantage dans la partie")
+    plt.yticks([-1, 0, 1], ["Noirs", "Neutre", "Blancs"])
+    plt.legend()
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.show()
 
     # Fermer le moteur Stockfish
     engine.quit()
 
 
 # Exemple d'utilisation
-pgn_path = "partie2.pgn"  # Remplace par le chemin de ton fichier PGN
-eval_couleur = "noirs"  # Choisir 'blancs' ou 'noirs'
-analyser_partie(pgn_path, eval_couleur)
+pgn_path = "partie/partie1.pgn"  # Remplace par le chemin de ton fichier PGN
+analyser_partie(pgn_path)

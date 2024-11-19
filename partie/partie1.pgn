@@ -1,0 +1,35 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2024.11.09"]
+[Round "-"]
+[White "clash1000"]
+[Black "SamSarB"]
+[Result "1-0"]
+[CurrentPosition "rn2k2r/p1qb1ppp/1p2p3/4P3/n2P4/1Q6/P1P3PP/1RB1KBNR w Kkq -"]
+[Timezone "UTC"]
+[ECO "D00"]
+[ECOUrl "https://www.chess.com/openings/Queens-Pawn-Opening-Chigorin-Variation-2...e6"]
+[UTCDate "2024.11.09"]
+[UTCTime "16:53:46"]
+[WhiteElo "696"]
+[BlackElo "668"]
+[TimeControl "600"]
+[Termination "clash1000 won by resignation"]
+[StartTime "16:53:46"]
+[EndDate "2024.11.09"]
+[EndTime "16:58:20"]
+[Link "https://www.chess.com/game/live/120789014052"]
+
+1. d4 d5
+2. Nc3 e6
+3. f3 Bb4
+4. e4 Bxc3+
+5. bxc3 dxe4
+6. fxe4 Nf6
+7. e5 Nd5
+8. c4 Nc3
+9. Qd3 Na4
+10. c5 Bd7
+11. Rb1 b6
+12. cxb6 cxb6
+13. Qb3 Qc7 1-0
