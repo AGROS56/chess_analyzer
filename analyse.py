@@ -13,6 +13,8 @@ def analyser_partie(pgn_path):
     :param pgn_path: Chemin vers le fichier PGN à analyser
     """
     # Charger la partie depuis le fichier PGN
+    mate = 1000
+
     game = source.charger_partie(pgn_path)
     if not game:
         return
@@ -35,30 +37,34 @@ def analyser_partie(pgn_path):
         board.push(move)
 
         # Évaluation de la position par Stockfish
-        result = engine.analyse(board, chess.engine.Limit(time=0.5))
+        result = engine.analyse(board, chess.engine.Limit(time=0.1))
         eval_score = result["score"].relative
 
         if eval_score.is_mate():
             # Gérer les situations de mat
             mate_in = eval_score.mate()
-            eval_score = 1000 if mate_in > 0 else -1000  # Mat pour Blancs ou Noirs
+            eval_score = mate if mate_in > 0 else -mate  # Mat pour Blancs ou Noirs
         else:
-            eval_score = eval_score.score(mate_score=1000)
+            eval_score = eval_score.score(mate_score=mate)
 
         # Stocker l'évaluation en centipions
         evaluations.append(eval_score)
         coups.append(coup_num)
 
         # Déterminer qui mène
-        if eval_score > 50:  # Avantage Blancs
+        if eval_score > 75:  # Avantage Blancs
             avantage_blancs.append(1)
-        elif eval_score < -50:  # Avantage Noirs
+        elif eval_score < -75:  # Avantage Noirs
             avantage_blancs.append(-1)
         else:  # Neutre
             avantage_blancs.append(0)
 
-        coup_num += 1
+        # Inverser le score des Noirs pour afficher l'opposé de leur évaluation
+        if len(coups) % 2 == 1:  # Si c'est le tour des Noirs
+            evaluations[-1] = -evaluations[-1]
 
+        coup_num += 1
+    print(evaluations)
     # Afficher l'évolution des évaluations
     plt.figure(figsize=(12, 6))
     plt.subplot(2, 1, 1)
@@ -86,8 +92,3 @@ def analyser_partie(pgn_path):
 
     # Fermer le moteur Stockfish
     engine.quit()
-
-
-# Exemple d'utilisation
-pgn_path = "partie/partie1.pgn"  # Remplace par le chemin de ton fichier PGN
-analyser_partie(pgn_path)

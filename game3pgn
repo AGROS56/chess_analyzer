@@ -1,0 +1,57 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2024.10.17"]
+[Round "-"]
+[White "AmoGin"]
+[Black "clash1000"]
+[Result "0-1"]
+[CurrentPosition "7r/qp1k1pp1/5n1p/P7/2PP4/4P3/4K3/8 b - c3"]
+[Timezone "UTC"]
+[ECO "B00"]
+[ECOUrl "https://www.chess.com/openings/Nimzowitsch-Defense-Declined-2...d5"]
+[UTCDate "2024.10.17"]
+[UTCTime "19:34:15"]
+[WhiteElo "333"]
+[BlackElo "690"]
+[TimeControl "3000"]
+[Termination "clash1000 won by resignation"]
+[StartTime "19:34:15"]
+[EndDate "2024.10.17"]
+[EndTime "19:52:36"]
+[Link "https://www.chess.com/game/live/122932511645"]
+
+
+1. e4 d5 
+2. Nf3 Nc6 
+3. Bb5 Bd7 
+4. exd5 Na5 
+5. a4 c6 
+6. Nd4 cxb5 
+7. Nxb5 e6 
+8. N1c3 exd5 
+9. d4 Qf6 
+10. Ra2 1Qg6 
+11. Nc7+ 1Kd8 
+12. Nxa8 1Qxg2 
+13. Ke2 1Bg4+ 
+14. Kd2 1Bxd1 
+15. Nxd1 1Qxh1 
+16. Ne3 1Qxh2 
+17. Kd3 1Qb8 
+18. Nb6 1axb6 
+19. Nxd5 1Qc8 
+20. Bg5+ 2Ke8 
+21. Nxb6 2Qc6 
+22. Na8 2Qc4+ 
+23. Kd2 2Qxa2 
+24. Nc7+ 2Kd7 
+25. Nb5 2Be7 
+26. Bf4 2h6 
+27. Na7 2Bg5 
+28. Be3 2Bxe3+ 
+29. fxe3 2Qxa4 
+30. b3 3Qb4+ 
+31. Ke2 3Qb6 
+32. b4 3Qxa7 
+33. bxa5 3Nf6 
+34. c4 0-1
